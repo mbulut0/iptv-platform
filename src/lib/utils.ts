@@ -9,6 +9,29 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
+ * Calculates time remaining from a date string
+ */
+export function getTimeRemaining(expiryDate: string): { days: number; hours: number; minutes: number } {
+  try {
+    const now = new Date();
+    const expiry = new Date(expiryDate);
+    const diff = expiry.getTime() - now.getTime();
+    
+    if (diff <= 0) {
+      return { days: 0, hours: 0, minutes: 0 };
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    return { days, hours, minutes };
+  } catch (e) {
+    return { days: 0, hours: 0, minutes: 0 };
+  }
+}
+
+/**
  * Formats a date string to a localized format
  */
 export function formatDate(dateString: string): string {

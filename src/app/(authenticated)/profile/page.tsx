@@ -10,7 +10,7 @@ import { ContentGrid } from '@/components/content/content-grid';
 import { MediaPlayer } from '@/components/player/media-player';
 import { usePlayerStore } from '@/lib/store/player-store';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { History, Star, User, Clock } from 'lucide-react';
+import { History, Star, User } from 'lucide-react';
 
 export default function ProfilePage() {
   const { session } = useAuthStore();
@@ -85,7 +85,10 @@ export default function ProfilePage() {
               <p className="text-sm font-medium text-muted-foreground">Kalan Süre</p>
               <p className="text-lg">
                 {session?.userInfo.exp_date
-                  ? getTimeRemaining(session.userInfo.exp_date)
+                  ? (() => {
+                      const remaining = getTimeRemaining(session.userInfo.exp_date);
+                      return `${remaining.days} gün, ${remaining.hours} saat`;
+                    })()
                   : 'Belirtilmemiş'}
               </p>
             </div>

@@ -117,6 +117,9 @@ export const getMovieCategories = async (credentials: XtreamCredentials): Promis
   }
 };
 
+// Alias for getVodCategories
+export const getVodCategories = getMovieCategories;
+
 export const getMovies = async (
   credentials: XtreamCredentials, 
   categoryId?: string
@@ -139,6 +142,9 @@ export const getMovies = async (
   }
 };
 
+// Alias for getVodStreams
+export const getVodStreams = getMovies;
+
 export const getMovieInfo = async (
   credentials: XtreamCredentials, 
   movieId: number
@@ -157,6 +163,9 @@ export const getMovieInfo = async (
     throw new Error('Failed to fetch movie information');
   }
 };
+
+// Alias for getVodInfo
+export const getVodInfo = getMovieInfo;
 
 export const getMovieUrl = (
   credentials: XtreamCredentials, 
@@ -205,6 +214,9 @@ export const getAllSeries = async (
     throw new Error('Failed to fetch series');
   }
 };
+
+// Alias for getSeries
+export const getSeries = getAllSeries;
 
 export const getSeriesInfo = async (
   credentials: XtreamCredentials, 
@@ -279,6 +291,9 @@ export const getShortEPG = async (
     throw new Error('Failed to fetch short EPG data');
   }
 };
+
+// Alias for getLiveStreamEpg
+export const getLiveStreamEpg = getShortEPG;
 
 // Helper function to check if credentials are valid
 export const isValidXtreamUrl = (url: string): boolean => {

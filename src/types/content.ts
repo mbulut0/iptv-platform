@@ -119,6 +119,9 @@ export interface EPGProgram {
   stop_timestamp: number;
 }
 
+// Alias for EPGProgram
+export type EpgItem = EPGProgram;
+
 export interface EPGData {
   [channelId: string]: EPGProgram[];
 }

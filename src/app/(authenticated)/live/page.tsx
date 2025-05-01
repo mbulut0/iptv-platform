@@ -40,7 +40,18 @@ export default function LiveTVPage() {
       if (!session?.credentials) throw new Error('No credentials');
       
       const streams = await getLiveStreams(session.credentials);
-      setLiveStreams(streams);
+      
+      // Group streams by category
+      const streamsByCategory: Record<string, any[]> = {};
+      streams.forEach(stream => {
+        const categoryId = stream.category_id;
+        if (!streamsByCategory[categoryId]) {
+          streamsByCategory[categoryId] = [];
+        }
+        streamsByCategory[categoryId].push(stream);
+      });
+      
+      setLiveStreams(streamsByCategory);
       
       // Set first channel as selected by default
       if (streams.length > 0 && !selectedChannelId) {

@@ -8,7 +8,7 @@ import { useAuthStore } from '@/lib/store/auth-store';
 import { useContentStore } from '@/lib/store/content-store';
 import { usePlayerStore } from '@/lib/store/player-store';
 import { usePreferencesStore } from '@/lib/store/preferences-store';
-import { getLiveStreamEpg } from '@/lib/api/xtream';
+import { getLiveStreamEpg, getLiveStreamUrl } from '@/lib/api/xtream';
 import { LiveStream, EpgItem } from '@/types/content';
 import { formatTime } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -23,7 +23,7 @@ export default function LiveChannelDetailPage() {
   const { session } = useAuthStore();
   const { liveStreams } = useContentStore();
   const { playContent, streamUrl } = usePlayerStore();
-  const { favorites, addToFavorites, removeFromFavorites } = usePreferencesStore();
+  const { favorites, addFavorite: addToFavorites, removeFavorite: removeFromFavorites } = usePreferencesStore();
   
   const [channel, setChannel] = useState<LiveStream | null>(null);
   const [epgData, setEpgData] = useState<EpgItem[]>([]);
@@ -32,7 +32,9 @@ export default function LiveChannelDetailPage() {
   
   // Find channel in store or fetch it
   useEffect(() => {
-    const foundChannel = liveStreams.find((stream) => stream.stream_id === channelId);
+    // liveStreams is a Record<string, LiveStream[]>, so we need to search all categories
+    const allStreams = Object.values(liveStreams).flat();
+    const foundChannel = allStreams.find((stream) => stream.stream_id.toString() === channelId);
     if (foundChannel) {
       setChannel(foundChannel);
     }
@@ -78,11 +80,11 @@ export default function LiveChannelDetailPage() {
     if (!channel) return;
     
     playContent({
-      contentId: channel.stream_id,
+      contentId: channel.stream_id.toString(),
       contentType: 'live',
       contentTitle: channel.name,
       contentPoster: channel.stream_icon || undefined,
-      streamUrl: channel.stream_url,
+      streamUrl: getLiveStreamUrl(session!.credentials, channel.stream_id),
     });
   };
   
@@ -91,13 +93,14 @@ export default function LiveChannelDetailPage() {
     if (!channel) return;
     
     if (isFavorite) {
-      removeFromFavorites(channel.stream_id, 'live');
+      removeFromFavorites(channel.stream_id.toString(), 'live');
     } else {
       addToFavorites({
-        id: channel.stream_id,
+        id: channel.stream_id.toString(),
         type: 'live',
         name: channel.name,
         poster: channel.stream_icon,
+        addedAt: new Date().toISOString(),
       });
     }
   };

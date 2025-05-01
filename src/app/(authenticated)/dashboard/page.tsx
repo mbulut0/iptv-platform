@@ -38,7 +38,10 @@ export default function DashboardPage() {
         {session?.userInfo.exp_date && (
           <p className="text-muted-foreground">
             Abonelik bitiş tarihi: {new Date(session.userInfo.exp_date).toLocaleDateString('tr-TR')} (
-            {getTimeRemaining(session.userInfo.exp_date)})
+            {(() => {
+              const remaining = getTimeRemaining(session.userInfo.exp_date);
+              return `${remaining.days} gün, ${remaining.hours} saat kaldı`;
+            })()})
           </p>
         )}
       </section>

@@ -127,6 +127,9 @@ export const getTVSeriesDetails = async (seriesId: number): Promise<TMDBSeries> 
   }
 };
 
+// Alias for getSeriesDetails
+export const getSeriesDetails = getTVSeriesDetails;
+
 // Get TV series credits (cast and crew)
 export const getTVSeriesCredits = async (seriesId: number): Promise<TMDBCredits> => {
   try {
