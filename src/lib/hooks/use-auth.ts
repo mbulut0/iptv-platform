@@ -27,7 +27,7 @@ export function useAuth() {
       const authResponse = await authenticate(credentials);
       
       // Check if authentication was successful
-      if (authResponse.user_info.auth !== 1) {
+      if (!authResponse.user_info || authResponse.user_info.auth !== 1) {
         throw new Error('Kimlik doğrulama başarısız. Lütfen bilgilerinizi kontrol edin.');
       }
       

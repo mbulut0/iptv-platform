@@ -34,8 +34,19 @@ const createXtreamClient = (credentials: XtreamCredentials) => {
 // Authentication
 export const authenticate = async (credentials: XtreamCredentials): Promise<AuthResponse> => {
   try {
-    const client = createXtreamClient(credentials);
-    const response = await client.get<AuthResponse>('player_api.php');
+    const { server, username, password } = credentials;
+    // Ensure server URL is properly formatted
+    const baseURL = server.endsWith('/') ? server.slice(0, -1) : server;
+    
+    // Direct API call for authentication
+    const response = await axios.get<AuthResponse>(`${baseURL}/player_api.php`, {
+      params: {
+        username,
+        password
+      }
+    });
+    
+    console.log('Auth response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Authentication error:', error);

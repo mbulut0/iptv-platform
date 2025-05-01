@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { SearchDialog } from '@/components/search/search-dialog';
 
 const navItems = [
+  { name: 'Ana Sayfa', href: '/dashboard', icon: Menu },
   { name: 'Canlı TV', href: '/live', icon: Tv },
   { name: 'Filmler', href: '/movies', icon: Film },
   { name: 'Diziler', href: '/series', icon: Video },
@@ -48,7 +49,7 @@ export function Navbar() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
-              <Link href="/" className="text-xl font-bold">
+              <Link href="/dashboard" className="text-xl font-bold">
                 IPTV Platform
               </Link>
             </div>
